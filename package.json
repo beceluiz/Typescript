@@ -5,7 +5,16 @@
   "repository": "https://github.com/beceluiz/Typescript.git",
   "author": "beceluiz <luizfernando.z.l.2011@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "tsnd --respawn src/server.ts"
+  },
   "devDependencies": {
+    "@types/koa": "^2.13.5",
+    "@types/koa-bodyparser": "^4.3.7",
+    "@types/koa-json": "^2.0.20",
+    "@types/koa-logger": "^3.1.2",
+    "@types/koa-router": "^7.4.4",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
