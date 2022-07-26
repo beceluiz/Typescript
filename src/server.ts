@@ -5,6 +5,7 @@ import bodyParser from "koa-bodyparser";
 import Movies from "./models/SchemaMovies";
 import { connectDB } from "./mongodb";
 import dotenv from "dotenv";
+import { connect } from "mongoose";
 
 const app = new Koa();
 const router = new Router({
@@ -14,31 +15,40 @@ const router = new Router({
 app.use(logger());
 app.use(bodyParser());
 
-router.get("/", (ctx) => {
-  ctx.body = { message: "Hello, world!" };
+// READ
+router.get("/", async (ctx) => {
+  try {
+    const movies = await Movies.find();
+
+    ctx.body = movies;
+  } catch (err) {
+    ctx.status = 404;
+    ctx.body = { message: "can't find movies" };
+  }
 });
+
+router;
+
+// CREATE
 router.post("/", async (ctx) => {
   try {
-    const movie = await Movies.create(ctx.request.body);
+    const movies = await Movies.create(ctx.request.body);
 
-    ctx.body = movie;
+    ctx.body = movies;
   } catch (err) {
     console.log(err);
     ctx.status = 400;
     ctx.body = { message: "error creating movie" };
   }
 });
-router.put("/", (ctx) => {});
-router.delete("/", (ctx) => {});
 
-async () => {
-  try {
-    connectDB();
-  } catch (err) {
-    console.log("unable to connect to database", err);
-  }
-};
+//UPDATE
+router.put("/:id", async (ctx) => {});
 
+//DELETE
+router.delete("/", async (ctx) => {});
+
+connectDB();
 app.use(router.routes());
 app.listen(3000, () => {
   console.log("listening on http://localhost:3000");
