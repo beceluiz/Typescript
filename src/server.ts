@@ -15,7 +15,8 @@ const router = new Router({
 app.use(logger());
 app.use(bodyParser());
 
-// READ
+//GET ALL
+
 router.get("/", async (ctx) => {
   try {
     const movies = await Movies.find();
@@ -23,7 +24,18 @@ router.get("/", async (ctx) => {
     ctx.body = movies;
   } catch (err) {
     ctx.status = 404;
-    ctx.body = { message: "can't find movies" };
+    ctx.body = { error: "can't find movies" };
+  }
+});
+// READ
+router.get("/:id", async (ctx) => {
+  try {
+    const movies = await Movies.findById(ctx.params.id);
+
+    ctx.body = movies;
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = { error: "movie not found" };
   }
 });
 
@@ -36,17 +48,36 @@ router.post("/", async (ctx) => {
 
     ctx.body = movies;
   } catch (err) {
-    console.log(err);
     ctx.status = 400;
-    ctx.body = { message: "error creating movie" };
+    ctx.body = { error: "error creating movie" };
   }
 });
 
 //UPDATE
-router.put("/:id", async (ctx) => {});
+router.put("/:id", async (ctx) => {
+  try {
+    const movies = await Movies.findByIdAndUpdate(
+      ctx.params.id,
+      ctx.request.body,
+      { new: true }
+    );
+    ctx.body = movies;
+  } catch {
+    ctx.status = 400;
+    console.log("cant update movie");
+  }
+});
 
 //DELETE
-router.delete("/", async (ctx) => {});
+router.delete("/:id", async (ctx) => {
+  try {
+    const movies = await Movies.findByIdAndDelete(ctx.params.id);
+    ctx.body = { message: "movie deleted!" };
+  } catch {
+    ctx.status = 400;
+    console.log("cant update movie");
+  }
+});
 
 connectDB();
 app.use(router.routes());
