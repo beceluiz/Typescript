@@ -12,7 +12,7 @@ app.use(logger());
 app.use(bodyParser());
 
 router.get("/", (ctx) => {
-  ctx.body = { message: "Hello, world!" };
+  ctx.body = { message: "Hello, mundo!" };
 });
 router.post("/", (ctx) => {});
 router.put("/", (ctx) => {});
