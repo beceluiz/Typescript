@@ -8,16 +8,21 @@ import dotenv from "dotenv";
 import { connect } from "mongoose";
 
 const app = new Koa();
-const router = new Router({
-  prefix: "/movies",
-});
+const index = new Router();
+const router = new Router();
 
 app.use(logger());
 app.use(bodyParser());
 
-//GET ALL
+// INDEX PAGE
 
 router.get("/", async (ctx) => {
+  ctx.body = { message: "Welcome to my first KOA API!" };
+});
+
+//GET ALL
+
+router.get("/movies", async (ctx) => {
   try {
     const movies = await Movies.find();
 
@@ -28,7 +33,7 @@ router.get("/", async (ctx) => {
   }
 });
 // READ
-router.get("/:id", async (ctx) => {
+router.get("/movies/:id", async (ctx) => {
   try {
     const movies = await Movies.findById(ctx.params.id);
 
@@ -42,7 +47,7 @@ router.get("/:id", async (ctx) => {
 router;
 
 // CREATE
-router.post("/", async (ctx) => {
+router.post("/movies/", async (ctx) => {
   try {
     const movies = await Movies.create(ctx.request.body);
 
@@ -54,7 +59,7 @@ router.post("/", async (ctx) => {
 });
 
 //UPDATE
-router.put("/:id", async (ctx) => {
+router.put("/movies/:id", async (ctx) => {
   try {
     const movies = await Movies.findByIdAndUpdate(
       ctx.params.id,
@@ -69,7 +74,7 @@ router.put("/:id", async (ctx) => {
 });
 
 //DELETE
-router.delete("/:id", async (ctx) => {
+router.delete("/movies/:id", async (ctx) => {
   try {
     const movies = await Movies.findByIdAndDelete(ctx.params.id);
     ctx.body = { message: "movie deleted!" };
