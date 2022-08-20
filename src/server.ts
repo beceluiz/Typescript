@@ -7,6 +7,12 @@ import { connectDB } from "./mongodb";
 import dotenv from "dotenv";
 import { connect } from "mongoose";
 
+import { GetAllMovies } from "./api/movies/MovieGetAll";
+import { GetMovie } from "./api/movies/GetMovie";
+import { DeleteMovie } from "./api/movies/DeleteMovie";
+import { CreateMovie } from "./api/movies/CreateMovie";
+import { UpdateMovie } from "./api/movies/UpdateMovie";
+
 const app = new Koa();
 const index = new Router();
 const router = new Router();
@@ -20,69 +26,12 @@ router.get("/", async (ctx) => {
   ctx.body = { message: "Welcome to my first KOA API!" };
 });
 
-//GET ALL
-
-router.get("/movies", async (ctx) => {
-  try {
-    const movies = await Movies.find();
-
-    ctx.body = movies;
-  } catch (err) {
-    ctx.status = 404;
-    ctx.body = { error: "can't find movies" };
-  }
-});
-// READ
-router.get("/movies/:id", async (ctx) => {
-  try {
-    const movies = await Movies.findById(ctx.params.id);
-
-    ctx.body = movies;
-  } catch (err) {
-    ctx.status = 400;
-    ctx.body = { error: "movie not found" };
-  }
-});
-
-router;
-
-// CREATE
-router.post("/movies/", async (ctx) => {
-  try {
-    const movies = await Movies.create(ctx.request.body);
-
-    ctx.body = movies;
-  } catch (err) {
-    ctx.status = 400;
-    ctx.body = { error: "error creating movie" };
-  }
-});
-
-//UPDATE
-router.put("/movies/:id", async (ctx) => {
-  try {
-    const movies = await Movies.findByIdAndUpdate(
-      ctx.params.id,
-      ctx.request.body,
-      { new: true }
-    );
-    ctx.body = movies;
-  } catch {
-    ctx.status = 400;
-    console.log("cant update movie");
-  }
-});
-
-//DELETE
-router.delete("/movies/:id", async (ctx) => {
-  try {
-    const movies = await Movies.findByIdAndDelete(ctx.params.id);
-    ctx.body = { message: "movie deleted!" };
-  } catch {
-    ctx.status = 400;
-    console.log("cant update movie");
-  }
-});
+// CRUD Routes
+router.get("/movies", GetAllMovies);
+router.get("/movies/:id", GetMovie);
+router.post("/movies/", CreateMovie);
+router.put("/movies/:id", UpdateMovie);
+router.delete("/movies/:id", DeleteMovie);
 
 connectDB();
 app.use(router.routes());
