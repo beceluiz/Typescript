@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
+import "dotenv-safe/config";
 
 export const connectDB = () => {
   mongoose.connect(`${process.env.MONGO_URI}`);
