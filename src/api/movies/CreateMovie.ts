@@ -21,7 +21,7 @@ export const CreateMovie = async (ctx: Context) => {
     return;
   }
   // the movie rate need to be between 1 and 10 (can't be 0 either)
-  if (rating.length > 2 || rating === "0" || rating > 10) {
+  if (rating.length > 2 || rating === 0 || rating > 10) {
     ctx.status = 400;
     ctx.body = {
       message: "you can only rate a movie between 1 and 10",
@@ -29,7 +29,7 @@ export const CreateMovie = async (ctx: Context) => {
     return;
   }
   // movie year need to have 4 digits only (we on 2022)
-  if (year.length > 4 || year.length < 4) {
+  if (year.length !== 4) {
     ctx.status = 400;
     ctx.body = {
       message: "a year need to have 4 digits",
