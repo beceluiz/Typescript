@@ -6,6 +6,7 @@ export const UpdateMovie = async (ctx: Context) => {
   const { id } = ctx.params;
   const { name, year, rating } = body;
 
+  // body validation
   if (Object.entries(body).length > 3) {
     ctx.status = 400;
     ctx.body = {
@@ -15,6 +16,7 @@ export const UpdateMovie = async (ctx: Context) => {
     return;
   }
 
+  // input validation
   let message = "";
   if (!name) message += "Attribute [name] is required.\n";
   if (!rating && rating !== 0) message += "Attribute [rating] is required.\n";
