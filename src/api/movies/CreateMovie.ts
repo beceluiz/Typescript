@@ -2,7 +2,18 @@ import { Context } from "koa";
 import Movies from "../../models/SchemaMovies";
 
 export const CreateMovie = async (ctx: Context) => {
-  const { name, rating, year } = ctx.request.body;
+  const { body } = ctx.request;
+  const { name, rating, year } = body;
+
+  //body validator
+  if (Object.entries(body).length > 3) {
+    ctx.status = 400;
+    ctx.body = {
+      message:
+        "invalid request, your request should only contain: name, year, rating",
+    };
+    return;
+  }
 
   // input validators
   let message = "";
