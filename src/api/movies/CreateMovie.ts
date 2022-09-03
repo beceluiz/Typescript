@@ -2,7 +2,18 @@ import { Context } from "koa";
 import Movies from "../../models/SchemaMovies";
 
 export const CreateMovie = async (ctx: Context) => {
-  const { name, rating, year } = ctx.request.body;
+  const { body } = ctx.request;
+  const { name, rating, year } = body;
+
+  //body validator
+  if (Object.entries(body).length > 3) {
+    ctx.status = 400;
+    ctx.body = {
+      message:
+        "invalid request, your request should only contain: name, year, rating",
+    };
+    return;
+  }
 
   // input validators
   let message = "";
@@ -10,13 +21,13 @@ export const CreateMovie = async (ctx: Context) => {
   if (!rating && rating !== 0) message += "Attribute [rating] is required.\n";
   if (!year && year !== 0) message += "Attribute [year] is required.\n";
   if (rating && !Number.isInteger(rating))
-    message += "\nAttribute [rating] should be an integer.\n";
+    message += "Attribute [rating] should be an integer.\n";
   if (year && !Number.isInteger(year))
-    message += "\n Attribute [year] should be an integer.\n";
+    message += "Attribute [year] should be an integer.\n";
   if (Number.isInteger(rating) && (rating < 1 || rating > 10))
-    message += "\nAttribute [rating] should be a value between 1 and 10.\n";
+    message += "Attribute [rating] should be a value between 1 and 10.\n";
   if (Number.isInteger(year) && (year < 1900 || year > 9999))
-    message += "\nAttribute [year] should be a value between 1900 and 9999.\n";
+    message += "Attribute [year] should be a value between 1900 and 9999.\n";
 
   if (message !== "") {
     ctx.status = 400;
