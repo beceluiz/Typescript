@@ -9,7 +9,7 @@ export const GetMovie = async (ctx: Context) => {
 
     ctx.body = movies;
   } catch (err) {
-    ctx.status = 400;
+    ctx.status = 404;
     ctx.body = { error: "movie not found" };
   }
 };
