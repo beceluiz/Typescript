@@ -9,7 +9,7 @@ export default {
 
   // Stop running tests after `n` failures
   bail: true,
-
+  testEnvironment: "node",
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "C:\\Users\\Luiz\\AppData\\Local\\Temp\\jest",
 
@@ -52,9 +52,8 @@ export default {
 
   // The default configuration for fake timers
   // fakeTimers: {
-  //   "enableGlobally": false
+  //   enableGlobally: false,
   // },
-
   // Force coverage collection from ignored files using an array of glob patterns
   // forceCoverageMatch: [],
 
