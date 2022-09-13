@@ -5,9 +5,20 @@ export const GetMovie = async (ctx: Context) => {
   const { id } = ctx.params;
 
   try {
-    const movies = await Movies.findById({ _id: id });
+    if (!id) {
+      ctx.status = 400;
+      ctx.body = { message: "you must provide a id" };
+      return;
+    }
 
-    ctx.body = movies;
+    const { _id, name, year, rating } = await Movies.findById({ _id: id });
+
+    ctx.body = {
+      name: name,
+      year: year,
+      rating: rating,
+      id: _id,
+    };
   } catch (err) {
     ctx.status = 404;
     ctx.body = { error: "movie not found" };
